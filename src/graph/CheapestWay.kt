@@ -1,5 +1,6 @@
 package graph
 
+import Demo
 import java.util.ArrayDeque
 import kotlin.test.assertEquals
 
@@ -12,11 +13,11 @@ private typealias Neighbours = Map<String, Float>
 private typealias WeightedGraph = Map<String, Neighbours>
 private typealias GraphAssert = Pair<WeightedGraph, (Pair<List<String>, Float>)?>
 
-object CheapestWay {
+object CheapestWay : Demo {
 
     private val _graph: GraphAssert = Graphs.exchangeNegative
 
-    fun demonstrate() {
+    override fun demonstrate() {
         val way = findWay(_graph.first)
         assertEquals(_graph.second, way)
 
@@ -108,6 +109,7 @@ object CheapestWay {
         println("lowest node = $minEntry")
         return minEntry
     }
+
     private fun buildWay(endNode: String, parents: MutableMap<String, String?>): List<String> {
         val way = ArrayDeque<String>()
         way.addLast(endNode)

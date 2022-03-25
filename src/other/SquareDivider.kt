@@ -1,11 +1,12 @@
 package other
 
+import Demo
 import kotlin.math.max
 import kotlin.math.min
 
-object SquareDivider {
+object SquareDivider : Demo {
 
-    fun demonstrate() {
+    override fun demonstrate() {
         val a = 1680
         val b = 640
         val squareSize = calculateSquareSize(a, b)

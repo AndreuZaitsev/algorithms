@@ -1,9 +1,10 @@
 package graph
 
+import Demo
 import java.util.*
 
 // BFS Algorithms (Breadth-First Search)
-object ShortPath {
+object ShortPath : Demo {
 
     private val _graph = mapOf(
         "0" to listOf("1", "2"),
@@ -26,14 +27,13 @@ object ShortPath {
         "10" to listOf("5")
     )
 
-    fun demonstrate() {
+    override fun demonstrate() {
         val shortestWay = findShortestWay("0", "10", _graph2)
         println("ShortestWay = $shortestWay, steps = ${shortestWay.size.dec()}")
     }
 
     data class Node(
-        val value: String,
-        val prevNode: Node?
+        val value: String, val prevNode: Node?
     )
 
     // BFS Algorithms
@@ -70,9 +70,9 @@ object ShortPath {
                 return findPath(node)
             }
 
-            val nextLevelNeighbors = graph[node.value].orEmpty()
-                .filter { it !in visitedNodes && !nodesToCheck.any { n -> n.value == it } }
-                .map { Node(it, node) }
+            val nextLevelNeighbors =
+                graph[node.value].orEmpty().filter { it !in visitedNodes && !nodesToCheck.any { n -> n.value == it } }
+                    .map { Node(it, node) }
 
             nodesToCheck += nextLevelNeighbors
         }

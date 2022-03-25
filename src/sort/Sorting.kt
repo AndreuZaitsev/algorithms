@@ -1,6 +1,10 @@
-object QuickSort {
+package sort
 
-    fun demonstrate() {
+import Demo
+
+object QuickSort : Demo {
+
+    override fun demonstrate() {
         val list = (1..99).toList().shuffled()
         val orderedList = qsort(list.toMutableList())
 

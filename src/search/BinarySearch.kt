@@ -1,8 +1,10 @@
 package search
 
-object BinarySearch {
+import Demo
 
-    fun demonstrate() {
+object BinarySearch : Demo {
+
+    override fun demonstrate() {
         val elements = (1..999).toList()
         val index = binarySearch(elements, 10)
         println(index)
