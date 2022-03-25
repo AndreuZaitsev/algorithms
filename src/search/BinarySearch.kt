@@ -1,3 +1,5 @@
+package search
+
 object BinarySearch {
 
     fun demonstrate() {
