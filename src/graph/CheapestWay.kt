@@ -8,8 +8,9 @@ import kotlin.test.assertEquals
  *
  * Positive edges only!
  */
-typealias Neighbours = Map<String, Float>
-typealias WeightedGraph = Map<String, Neighbours>
+private typealias Neighbours = Map<String, Float>
+private typealias WeightedGraph = Map<String, Neighbours>
+private typealias GraphAssert = Pair<WeightedGraph, (Pair<List<String>, Float>)?>
 
 object CheapestWay {
 
@@ -107,7 +108,6 @@ object CheapestWay {
         println("lowest node = $minEntry")
         return minEntry
     }
-
     private fun buildWay(endNode: String, parents: MutableMap<String, String?>): List<String> {
         val way = ArrayDeque<String>()
         way.addLast(endNode)
@@ -122,7 +122,6 @@ object CheapestWay {
     }
 }
 
-private typealias GraphAssert = Pair<WeightedGraph, (Pair<List<String>, Float>)?>
 
 private object Graphs {
     val first: GraphAssert = mapOf(
