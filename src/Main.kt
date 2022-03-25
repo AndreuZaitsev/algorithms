@@ -1,8 +1,12 @@
+import graph.CheapestWay
+
 fun main() {
-//    SquareDivider.demonstrate()
-//    BinarySearch.demonstrate()
+//    other.SquareDivider.demonstrate()
+//    search.BinarySearch.demonstrate()
 //    QuickSort.demonstrate()
-//    ShortPath.demonstrate()
+//    graph.ShortPath.demonstrate()
+
+    CheapestWay.demonstrate()
 }
 
 

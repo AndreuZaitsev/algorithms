@@ -1,3 +1,5 @@
+package graph
+
 import java.util.*
 
 // BFS Algorithms (Breadth-First Search)
