@@ -18,7 +18,7 @@ object Backpack : Demo {
         val bestPrice = 3500
 
         assertEquals(bestPrice, actualPrice)
-        println("Best Backpack Price = $actualPrice$")
+        println("Backpack Price = $actualPrice$")
     }
 
     private fun calculateBackpack(things: List<Thing>, backpackWeight: Int): Int {
@@ -37,16 +37,12 @@ object Backpack : Demo {
             prices.forEachIndexed { columnIndex, currentPrice ->
                 // Iterate by column
                 val weight = columnIndex + 1
-
                 val previousThingRow = table.getOrNull(thingIndex - 1)
-
                 val knownPrice = previousThingRow?.get(columnIndex) ?: currentPrice
-
                 val priceToSet =
                     if (thingWeight <= weight) {
                         // Set new price to cell if it's greater than the known one
                         val newPrice = max(thingPrice, knownPrice)
-
                         if (thingWeight == weight)
                             newPrice
                         else {
@@ -77,14 +73,20 @@ object Backpack : Demo {
 
     private fun traceBackPack(things: List<Thing>, table: Array<Array<Int>>) {
         val backpack = mutableListOf<Thing>()
+        var backpackSize = table[0].size
 
-        table.forEachIndexed { index, prices ->
-            prices.forEachIndexed { index, i ->
+        for (rowIndex in table.lastIndex downTo 0) {
+            val columnIndex = backpackSize - 1
+            val price = table[rowIndex][columnIndex]
+            val prevPrice = table.getOrNull(rowIndex - 1)?.get(backpackSize - 1) ?: 0
 
+            if (price != prevPrice) {
+                val thing = things[rowIndex]
+                backpack.add(thing)
+                backpackSize -= thing.weight
             }
         }
-
-        println(backpack)
+        println("Backpack has: ${backpack.joinToString { it.name }}")
     }
 
     private data class Thing(

@@ -1,4 +1,5 @@
 import dynamic.Backpack
+import dynamic.Backpack2
 import graph.CheapestWay
 import graph.ShortPath
 import greedy.StationsAndStates
@@ -14,6 +15,7 @@ fun main() {
         ShortPath,
         CheapestWay,
         StationsAndStates,
+        Backpack2,
         Backpack
     )
         .last()
