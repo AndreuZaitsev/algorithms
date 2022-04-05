@@ -1,3 +1,4 @@
+import dynamic.Backpack
 import graph.CheapestWay
 import graph.ShortPath
 import greedy.StationsAndStates
@@ -12,7 +13,8 @@ fun main() {
         QuickSort,
         ShortPath,
         CheapestWay,
-        StationsAndStates
+        StationsAndStates,
+        Backpack
     )
         .last()
         .demonstrate()
