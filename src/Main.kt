@@ -19,10 +19,30 @@ fun main() {
         Backpack
     )
         .last()
-        .demonstrate()
+//        .demonstrate()
+    reverseStringArray()
 }
+
 
 interface Demo {
 
     fun demonstrate()
+}
+
+
+fun reverseStringArray() {
+    val a = arrayOf<String>()
+    val size = a.size
+    var temp: String
+
+    for (i in 0 until size / 2) {
+        val indexFromEnd = size - 1 - i
+        temp = a[indexFromEnd]
+        a[indexFromEnd] = a[i]
+        a[i] = temp
+    }
+    //Выводим конечный массив в консоль
+    for (i in a.indices) {
+        print(a[i])
+    }
 }
