@@ -137,3 +137,18 @@ hs_err_pid*
 replay_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/kotlin,intellij
+
+release.properties
+project.properties
+*.iml
+.classpath
+.project
+.settings/
+.idea/
+.navigation/
+out
+.DS_Store
+classes
+.gradle
+build/
+local.properties
