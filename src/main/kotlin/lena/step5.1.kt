@@ -15,7 +15,7 @@ private fun launchCatsSquad() {
     }
 }
 
-class Cat(
+private class Cat(
     val catName: String,
     val catAge: Int
 )

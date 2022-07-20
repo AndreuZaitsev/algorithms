@@ -2,12 +2,9 @@ package rxjava
 
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
 
 val connection = BehaviorSubject.createDefault<Boolean>(true)
 
@@ -36,13 +33,12 @@ fun main() {
     }
 }
 
-class RxJavaMain() {
+class RxJavaMain {
 
     private val singleBool
         get() = Single.fromCallable {
             Thread.sleep(500)
             true
-            throw IllegalStateException()
         }
 
     private val disconnectedSignal = connection

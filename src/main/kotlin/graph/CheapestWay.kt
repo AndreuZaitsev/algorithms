@@ -2,7 +2,6 @@ package graph
 
 import Demo
 import java.util.ArrayDeque
-import kotlin.test.assertEquals
 
 /**
  * Dijkstra's Algorithm for weighted graph.
@@ -19,7 +18,7 @@ object CheapestWay : Demo {
 
     override fun demonstrate() {
         val way = findWay(_graph.first)
-        assertEquals(_graph.second, way)
+//        assertEquals(_graph.second, way)
 
         println("The way: ${way.first.joinToString(separator = " -> ")} , summary weight = ${way.second}")
     }

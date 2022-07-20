@@ -2,7 +2,6 @@ package dynamic
 
 import Demo
 import kotlin.math.max
-import kotlin.test.assertEquals
 
 object Backpack : Demo {
 
@@ -17,7 +16,6 @@ object Backpack : Demo {
         val actualPrice = calculateBackpack(things, maxWeight)
         val bestPrice = 3500
 
-        assertEquals(bestPrice, actualPrice)
         println("Backpack Price = $actualPrice$")
     }
 

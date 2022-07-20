@@ -1,4 +1,4 @@
-internal class User(var firstName: String = "Peter", var secondName: String = "Parker") {
+ class User(var firstName: String = "Peter", var secondName: String = "Parker") {
 //    constructor(): this ("Peter", "Parker"){
 //        println("Данные были установлены")
 //    }
@@ -17,7 +17,7 @@ var login: String? = null
         return field
     }
      fun printUser (){
-        println("$firstName, $secondName")
+        println("$firstName $secondName")
     }
 }
 // или прописать через init:

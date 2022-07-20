@@ -1,8 +1,6 @@
 package dynamic
 
 import Demo
-import javax.swing.text.html.HTML.Tag
-import kotlin.test.assertEquals
 
 object Backpack2 : Demo {
 
@@ -17,7 +15,7 @@ object Backpack2 : Demo {
         val actualPrice = calculateBackpack(things, maxWeight)
         val bestPrice = TagPrice(3500, "Laptop, Guitar")
 
-        assertEquals(bestPrice, actualPrice)
+
         println("Best Backpack Price = $actualPrice$")
     }
 
