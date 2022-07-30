@@ -11,7 +11,7 @@ private val connection = BehaviorSubject.createDefault(true)
 private val process = AtomicBoolean(true)
 
 fun main() {
-    val sut = RxJavaMain()
+    val sut = RxJavaMain2()
     val thread = Thread { sut.init() }
     val stopThread = Thread {
         Thread.sleep(2000)
@@ -20,17 +20,19 @@ fun main() {
     }
 
     thread.start()
+    stopThread.start()
     while (process.get()) {
         // Keep main thread alive
     }
 }
 
-private class RxJavaMain {
+private class RxJavaMain2 {
 
     private val isFeatureEnabled
         get() = Single.fromCallable {
             Thread.sleep(500)
             true
+//            throw IllegalArgumentException()
         }
 
     private val disconnectedSignal = connection.filter { isConnected -> isConnected.not() }
@@ -44,28 +46,29 @@ private class RxJavaMain {
     private var disposable: Disposable? = null
 
     fun init() {
-        disposable = isFeatureEnabled.flatMapObservable { isFeatureEnabled ->
-            eventsSource.apply {
-                if (isFeatureEnabled)
-                    launchFirstFeature()
-                        .doFinally { process.set(false) }
-                        .subscribe(
-                            { /* Nothing to do */ },
-                            { error -> println("Error in (1) $error") }
-                        )
-                else
-                    launchSecondFeature()
-                        .doFinally { process.set(false) }
-                        .subscribe(
-                            { /* Nothing to do */ },
-                            { error -> println("Error in (2) $error") }
-                        )
+        isFeatureEnabled
+            .toObservable()
+            .flatMap { isEnabled ->
+                if (isEnabled) {
+                    val s1 = eventsSource.launchFirstFeature()
+                    val s2 = getMetadataObservable()
+                        .doOnNext {
+                            Thread.sleep(100)
+                            println(it)
+                        }
+                    Observable.merge(s1, s2)
+                } else {
+                    eventsSource.launchSecondFeature()
+                }
             }
-        }
-            .applyLogging("Main Stream")
+            .doOnNext {
+
+            }
+            .doFinally { process.set(false) }
+            .applyLogging("Main-Stream")
             .subscribe(
                 { /* Nothing to do */ },
-                { error -> println("Error while preparing ads for tracking $error") }
+                { error -> println("Main stream handle error $error") }
             )
     }
 
@@ -75,7 +78,7 @@ private class RxJavaMain {
         disposable = null
     }
 
-    private fun Observable<Event>.launchFirstFeature(): Observable<Int> = this
+    private fun Observable<Event>.launchFirstFeature(): Observable<Double> = this
         .applyLogging("First Stream")
         .switchMap { event ->
             println("event(1) = $event")
@@ -84,6 +87,9 @@ private class RxJavaMain {
         .doOnNext {
             Thread.sleep(100)
             println("number(1) = $it")
+        }
+        .map {
+            it.toDouble()
         }
 
     private fun Observable<Event>.launchSecondFeature(): Observable<Int> = this
@@ -96,19 +102,16 @@ private class RxJavaMain {
             Thread.sleep(100)
             println("number(2) = $it")
         }
+        .doOnError { "Second stream handle error $it" }
+
 
     private fun getNumbersObservable(event: Event): Observable<Int> {
         val numbers = event.values.toList()
         return Observable.fromArray(*numbers.toTypedArray())
     }
-}
 
-fun <T : Any> Observable<T>.applyLogging(tag: String): Observable<T> =
-    doOnSubscribe { println("$tag - SUBSCRIBE") }
-        .doOnComplete { println("$tag - COMPLETE") }
-
-enum class Event(val values: IntRange) {
-    FIRST(1..10),
-    SECOND(200..210),
-    THIRD(300..310)
+    private fun getMetadataObservable(): Observable<String> {
+        val list = (1..100).toList().map { "metadata $it" }
+        return Observable.fromArray(*list.toTypedArray())
+    }
 }

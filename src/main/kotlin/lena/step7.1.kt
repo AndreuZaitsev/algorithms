@@ -1,18 +1,23 @@
 fun main() {
-    val father = Father("Валерий", 59, Salary.MEDIUM)
+    val father = Father(name = "Валерий", age = 59, JobPosition.Engineer(Level.SENIOR, Salary.MEDIUM))
     //father.sayHello()
     //father.work()
-
-    val mother = Mother("Татьяна", 58, Salary.LOW)
+    val mother = Mother(name = "Татьяна", age = 58, JobPosition.Teacher(Level.SENIOR, Salary.LOW))
     // mother.sayHello()
     // mother.work()
+    val unemployed = Father(name = "Coockie", age = 6, JobPosition.Unemployed)
+//    unemployed.sayHello()
 
 
     val workers = listOf<Worker>(
         father,
         mother,
+        unemployed,
         // object - анонимный класс
         object : Worker {
+            override val jobPosition: JobPosition
+                get() = JobPosition.Engineer(Level.MIDL, Salary.MEDIUM)
+
             override fun work() {
                 println("I'm anonymous")
             }
@@ -21,11 +26,48 @@ fun main() {
     sendToWork(workers)
 }
 
-fun sendToWork(workers: List<Worker>) {
-    workers.forEach {
-        it.work()
-        (it as? Human)?.sayHello()
+fun List<Worker>.filterWorkers(condition: (Worker) -> Boolean): List<Worker> {
+    val destination = mutableListOf<Worker>()
+    this.forEachIndexed { index, worker ->
+        val isTrueCondition = condition(worker)
+        if (isTrueCondition) {
+            destination.add(worker)
+        }
     }
+    return destination
+}
+
+fun sendToWork(workers: List<Worker>) {
+    println("Has job:")
+    workers.filterWorkers() {
+//       val position = when (it){
+//            is Mother->it.jobPosition
+//            is Father->it.jobPosition
+//            else->JobPosition.Unemployed
+//        }
+        it.isAdult(50)
+    }
+        .forEach {
+            (it as? Human)?.sayHello()
+            it.work()
+            println()
+        }
+
+    println("Hasn't job:")
+    workers.filter {
+//        val position = when (it){
+//            is Mother->it.jobPosition
+//            is Father->it.jobPosition
+//            else->JobPosition.Unemployed
+//        }
+        val hasJob = it.jobPosition != JobPosition.Unemployed
+        !hasJob
+    }
+        .forEach {
+            (it as? Human)?.sayHello()
+            it.work()
+            println()
+        }
 }
 
 enum class Gender {
@@ -76,15 +118,15 @@ abstract class Woman(
 class Mother(
     override val name: String,
     override val age: Int,
-    val salary: Salary
+    override val jobPosition: JobPosition
 ) : Woman(name, age), Worker {
     override fun sayHello() {
 //        super.sayHello()
-        println("I'm mother, salary ${salary.value}")
+        println("I'm mother: $name, $age")
     }
 
     override fun work() {
-        println("I'm a teacher")
+        println(jobPosition)
     }
 }
 
@@ -105,21 +147,44 @@ open class Man(
     }
 }
 
-interface Worker {
+interface Worker {   /*Интерфейс: не содержит конструктор, не имеет переменных полей, позволяет наследовать
+     неограниченное кол-во интерфейсов в отличии от абстрактного класса
+     можно наследовать абстрактный класс + интерфейсы. Интерфейсы лучше использовать как средство наследования поведения, а АК - состоянияю */
+    val jobPosition: JobPosition
     fun work()
+}
+
+fun Worker.isAdult(adultAge: Int): Boolean {
+    val age = (this as? Human)?.age ?: 0 //Элвис-оператор
+//    val age = (this as? Human)?.age ?: return false
+    return age > adultAge
 }
 
 class Father(
     override val name: String,
     override val age: Int,
-    val salary: Salary
+    override val jobPosition: JobPosition
 ) : Man(name, age), Worker {
     override fun work() {
-        println("I'm an engineer")
+        println(jobPosition)
     }
 
     override fun sayHello() {
 //        super.sayHello()
-        println("I'm father: salary ${salary.value}")
+        println("I'm father: $name, $age")
+    }
+}
+
+enum class Level {
+    JUNIOR, MIDL, SENIOR
+}
+
+sealed class JobPosition {
+    data class Engineer(val level: Level, val salary: Salary) : JobPosition()
+    data class Teacher(val level: Level, val salary: Salary) : JobPosition()
+    object Unemployed : JobPosition() {
+        override fun toString(): String {
+            return this.javaClass.name
+        }
     }
 }
