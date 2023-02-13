@@ -23,7 +23,6 @@ fun main() {
     reverseStringArray()
 }
 
-
 interface Demo {
 
     fun demonstrate()
@@ -31,7 +30,7 @@ interface Demo {
 
 
 fun reverseStringArray() {
-    val a = arrayOf<String>()
+    val a = arrayOf<String>("a", "b", "c")
     val size = a.size
     var temp: String
 
