@@ -1,11 +1,11 @@
-import dynamic.Backpack
-import dynamic.Backpack2
-import graph.CheapestWay
-import graph.ShortPath
-import greedy.StationsAndStates
-import other.SquareDivider
-import search.BinarySearch
-import sort.QuickSort
+import dynamic_algorithms.Backpack
+import dynamic_algorithms.Backpack2
+import graph_algorithms.graph.CheapestWay
+import graph_algorithms.graph.ShortPath
+import graph_algorithms.greedy.StationsAndStates
+import other_algorithms.SquareDivider
+import search_algorithms.BinarySearch
+import sort_algorithms.QuickSort
 
 fun main() {
     listOf(
