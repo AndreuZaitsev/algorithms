@@ -4,26 +4,29 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 
-data class Item(val id: Int)
-
-fun itemFlow(): Flow<Item> = flow {
-    (1..5).forEach { id ->
-        emit(Item(id))
-        delay(50)
+private fun itemFlow(): Flow<Int> = flow {
+    (1..3).forEach { id ->
+        emit(id)
+        delay(500)
     }
 }
 
 fun main() = runBlocking {
     val startTime = System.currentTimeMillis()
-    val result = mutableListOf<Item>()
-    itemFlow().flowOn(Dispatchers.IO).map { item ->
-        delay(100)
-        Item(item.id * 2)
-    }.flowOn(Dispatchers.Default).collect { item ->
-        result.add(item)
-    }
+    val result = mutableListOf<Int>()
+    val timePassed = { System.currentTimeMillis() - startTime }
+    itemFlow()
+        .onEach { item -> log("Emitting $item - ${timePassed()} ms") }
+        .map { item ->
+            delay(1000)
+            log("Mapped $item - ${timePassed()} ms")
+            item * 2
+        }
+        .collect { item -> result.add(item) }
+
     val endTime = System.currentTimeMillis()
 
     log("Result: $result")

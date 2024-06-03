@@ -6,6 +6,7 @@ import log
 
 // Puzzler 1.2: Coroutine Context Switching
 // Question: What is the output of this code snippet, and why?
+@OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
 fun main(): Unit = runBlocking {
     val context1 = newSingleThreadContext("Context1")
     val context2 = newSingleThreadContext("Context2")

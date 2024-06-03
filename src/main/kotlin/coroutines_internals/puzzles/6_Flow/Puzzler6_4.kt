@@ -17,16 +17,19 @@ fun number(): Flow<Int> = flow {
 fun main() = runBlocking {
     var retryCount = 0
     val result = mutableListOf<Int>()
-    number().retryWhen { _, _ ->
-        if (retryCount < 3) {
-            retryCount++
-            true
-        } else {
-            false
+    number()
+        .retryWhen { _, _ ->
+            if (retryCount < 3) {
+                retryCount++
+                true
+            } else {
+                false
+            }
         }
-    }.catch { t -> log("Caught exception: $t") }.collect {
-        result.add(it)
-    }
+        .catch { t -> log("Caught exception: $t") }
+        .collect {
+            result.add(it)
+        }
 
     log("Result: $result")
     log("Retry count: $retryCount")

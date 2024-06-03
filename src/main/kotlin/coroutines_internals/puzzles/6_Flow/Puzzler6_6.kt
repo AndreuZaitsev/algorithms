@@ -7,8 +7,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import log
 
+private fun itemFlow(): Flow<Int> = flow {
+    (1..5).forEach { id ->
+        emit(id)
+        delay(50)
+    }
+}
 
-fun Flow<Item>.timed(delay: Long): Flow<Pair<Item, Long>> = flow {
+fun Flow<Int>.timed(delay: Long): Flow<Pair<Int, Long>> = flow {
     var startTime = 0L
 
     buffer(1, BufferOverflow.DROP_OLDEST).collect { item ->
@@ -23,11 +29,12 @@ fun Flow<Item>.timed(delay: Long): Flow<Pair<Item, Long>> = flow {
 
 fun main(): Unit = runBlocking {
     val sharedFlow = itemFlow()
-        .shareIn(this, SharingStarted.Eagerly, 0)
+        .shareIn(this, SharingStarted.Lazily, 0)
+//        .shareIn(this, SharingStarted.Eagerly, 0)
 
     launch {
         sharedFlow.collect {
-            log(it.toString())
+            log("first collector: $it")
         }
     }
 
@@ -35,7 +42,7 @@ fun main(): Unit = runBlocking {
         sharedFlow
             .timed(1000)
             .collect {
-                log(it.toString())
+                log("second collector: $it")
             }
     }
 }

@@ -17,9 +17,10 @@ fun numberFlow(): Flow<Int> = flow {
 
 fun main(): Unit = runBlocking {
     withTimeoutOrNull(250) {
-        numberFlow().collect {
-            delay(50)
-            log(it.toString())
-        }
+        numberFlow()
+            .collect {
+                delay(50)
+                log(it.toString())
+            }
     }
 }
