@@ -27,3 +27,9 @@ fun main() = runBlocking {
     }
     job.join()
 }
+
+
+/**
+ * Answer:
+ * 2 jobs have same parent job, so if one of them fails, the other one will be cancelled.
+ */

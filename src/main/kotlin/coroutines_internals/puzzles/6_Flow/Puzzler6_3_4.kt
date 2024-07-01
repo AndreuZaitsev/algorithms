@@ -9,21 +9,22 @@ import kotlinx.coroutines.runBlocking
 
 private fun itemFlow(): Flow<Int> = flow {
     (1..3).forEach { id ->
+        log("Emitting $id ...")
         emit(id)
+        log("Emitted $id ...")
         delay(500)
     }
 }
 
-fun main() = runBlocking(Dispatchers.Default) {
+fun main() = runBlocking(Dispatchers.Default) { // Diff from Puzzler6_3_3.kt
     val startTime = System.currentTimeMillis()
     val result = mutableListOf<Int>()
     val timePassed = { System.currentTimeMillis() - startTime }
     itemFlow()
-        .onEach { item -> log("Emitting $item - ${timePassed()} ms") }
-        .flowOn(Dispatchers.IO)
+        .onEach { item -> log("on-each: $item - ${timePassed()} ms") }
         .map { item ->
             delay(1000)
-            log("Mapped $item - ${timePassed()} ms")
+            log("map: $item - ${timePassed()} ms")
             item * 2
         }
         .collect { item -> result.add(item) }

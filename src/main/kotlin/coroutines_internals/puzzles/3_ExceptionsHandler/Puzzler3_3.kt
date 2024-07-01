@@ -27,5 +27,20 @@ fun main() = runBlocking {
             log("🍬Coroutine 2 completes successfully")
         }
     }
+    val job2 = scope.launch(exceptionHandler) {
+        launch {
+            log("Coroutine 3 starts")
+            delay(500)
+            log("Coroutine 1 throws an exception")
+            throw RuntimeException("Coroutine 1 exception")
+        }
+
+        launch {
+            log("Coroutine 4 starts")
+            delay(1000)
+            log("🍬Coroutine 2 completes successfully")
+        }
+    }
     job.join()
+    job2.join()
 }

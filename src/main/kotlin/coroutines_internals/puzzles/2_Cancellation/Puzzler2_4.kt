@@ -11,7 +11,6 @@ import kotlinx.coroutines.runBlocking
 import log
 
 private val scope = CoroutineScope(SupervisorJob())
-
 fun main(): Unit = runBlocking {
     scope.launch {
         delay(1000)
@@ -21,15 +20,13 @@ fun main(): Unit = runBlocking {
         delay(2000)
         log("scope[2]")
     }
-
-
     delay(1500)
     log("canceling the scope")
     scope.coroutineContext.cancelChildren()
 
+    delay(1000)
     scope.launch {
         log("scope[3]")
     }
-
     log("end")
 }

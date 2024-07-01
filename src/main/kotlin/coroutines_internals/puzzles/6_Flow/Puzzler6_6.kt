@@ -2,7 +2,11 @@ package `6_Flow`
 
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import log
@@ -14,6 +18,7 @@ private fun itemFlow(): Flow<Int> = flow {
     }
 }
 
+// simulates backpressure by adding delay and dropping the oldest item
 fun Flow<Int>.timed(delay: Long): Flow<Pair<Int, Long>> = flow {
     var startTime = 0L
 
