@@ -1,6 +1,10 @@
 package `3_ExceptionsHandler3_1`
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import log
 
 // Puzzler 3.1: Coroutine Exception Handling
@@ -19,7 +23,7 @@ fun main() = runBlocking {
             throw RuntimeException("Coroutine 1 exception")
         }
 
-        launch {
+        launch() {
             log("Coroutine 2 starts")
             delay(1000)
             log("🍬Coroutine 2 completes successfully")

@@ -1,11 +1,14 @@
 package `1_Scope1_2`
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import log
 
 
-// Puzzler 1.2: Coroutine Context Switching
-// Question: What is the output of this code snippet, and why?
 @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
 fun main(): Unit = runBlocking {
     val context1 = newSingleThreadContext("Context1")

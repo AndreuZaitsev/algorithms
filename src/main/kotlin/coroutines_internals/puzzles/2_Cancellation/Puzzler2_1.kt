@@ -6,8 +6,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import log
 
-// Puzzler 2.1: Coroutine Cancellation
-// Question: What will be the output of this code snippet, and why?
 fun main() = runBlocking {
     val job = launch {
         try {

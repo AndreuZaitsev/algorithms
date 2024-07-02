@@ -1,19 +1,14 @@
 package `2_Cancellation`
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.yield
 import log
 
 private val scope = CoroutineScope(SupervisorJob())
-
 fun main(): Unit = runBlocking {
     scope.launch {
         delay(1_000)
@@ -33,7 +28,6 @@ fun main(): Unit = runBlocking {
     scope.launch {
         log("scope[4]")
     }
-
     job.join()
     log("end")
 }

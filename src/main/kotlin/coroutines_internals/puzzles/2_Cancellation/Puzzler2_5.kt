@@ -11,12 +11,12 @@ import kotlinx.coroutines.runBlocking
 import log
 
 private val scope = CoroutineScope(SupervisorJob())
-
 fun main(): Unit = runBlocking {
     scope.launch {
         delay(1_000)
         log("scope[1]")
     }
+
     scope.launch(Job()) {
         delay(2_000)
         log("scope[2]")
