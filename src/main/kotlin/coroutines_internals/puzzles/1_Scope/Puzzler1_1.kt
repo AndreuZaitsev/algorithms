@@ -4,7 +4,7 @@ import kotlinx.coroutines.*
 import log
 
 fun main(): Unit = runBlocking {
-    val job = launch(Dispatchers.Default) {
+    val job = launch {
         delay(500)
         log("Coroutine 1")
     }
