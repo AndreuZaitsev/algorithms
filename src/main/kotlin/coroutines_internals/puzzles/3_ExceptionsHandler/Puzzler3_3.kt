@@ -2,14 +2,13 @@ package `3_ExceptionsHandler3_1`
 
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import log
-
-// Puzzler 3.1: Coroutine Exception Handling with a SupervisorJob
-// Question: What is the output of this code snippet, and why?
 
 fun main() = runBlocking {
     val exceptionHandler = CoroutineExceptionHandler { _, exception ->
@@ -17,7 +16,7 @@ fun main() = runBlocking {
     }
 
     val scope = CoroutineScope(SupervisorJob())
-    val job = scope.launch(exceptionHandler) {
+    scope.launch(exceptionHandler) {
         launch {
             log("Coroutine 1 starts")
             delay(500)
@@ -25,14 +24,14 @@ fun main() = runBlocking {
             throw RuntimeException("Coroutine 1 exception")
         }
 
-        launch {
+        scope.launch {
             log("Coroutine 2 starts")
             delay(5000)
             log("🍬Coroutine 2 completes successfully")
         }
     }
 
-    val job2 = scope.launch(exceptionHandler) {
+    scope.launch(exceptionHandler) {
         launch {
             log("Coroutine 3 starts")
             delay(500)
@@ -46,6 +45,7 @@ fun main() = runBlocking {
             log("🍬Coroutine 4 completes successfully")
         }
     }
-    job.join()
-    job2.join()
+
+    val allJobs = scope.coroutineContext[Job]?.children.orEmpty().toList().toTypedArray()
+    joinAll(*allJobs)
 }
